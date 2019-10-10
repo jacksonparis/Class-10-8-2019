@@ -1,4 +1,5 @@
 library(tidyverse)
+library(purrr)
 
 roll <- function() {
   sample(x = 1:6, size = 1)
@@ -27,5 +28,10 @@ plot_rolls2 <- function(n) {
 x1 <- tibble(rolls = rollem2(n))
 ggplot(x1, aes(x = rolls)) + geom_histogram()
 }
+
+tibble(rolls  = rollem(1000)) %>% mutate(include_7_or_11 = ifelse(rolls %in% c(7, 11), TRUE, FALSE)) %>%
+  summarize(prop = sum(include_7_or_11)/n()) 
+
+x <- tibble(replication = 1:100, throws = map(1:100, ~rollem(3)))
 
 
